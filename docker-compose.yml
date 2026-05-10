@@ -1,0 +1,12 @@
+services:
+  ytd:
+    build: .
+    image: ${YTD_IMAGE:-ytd:local}
+    container_name: ytd
+    env_file: .env
+    ports:
+      - "${YTD_PORT:-8000}:8000"
+    volumes:
+      - ./downloads:/app/downloads
+      - ./data:/app/data
+    restart: unless-stopped

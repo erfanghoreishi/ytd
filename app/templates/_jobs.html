@@ -1,0 +1,28 @@
+{% if jobs %}
+<table>
+  <thead>
+    <tr><th>#</th><th>Title / URL</th><th>Status</th><th>Progress</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for j in jobs %}
+    <tr>
+      <td>{{ j.id }}</td>
+      <td>
+        <strong>{{ j.title or "—" }}</strong>
+        <div class="url">{{ j.url }}</div>
+        {% if j.error %}<div class="status-error">{{ j.error }}</div>{% endif %}
+      </td>
+      <td class="status-{{ j.status }}">{{ j.status }}</td>
+      <td>{{ "%.1f"|format(j.progress or 0) }}%</td>
+      <td>
+        {% if j.status == "done" %}
+          <a href="/jobs/{{ j.id }}/file">download</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p style="color:#888"><em>No jobs yet.</em></p>
+{% endif %}

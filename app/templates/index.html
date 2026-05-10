@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>YTD — YouTube Download Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/static/htmx.min.js"></script>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { margin-bottom: 0.25rem; }
+    .sub { color: #888; margin-top: 0; }
+    form { display: flex; gap: 0.5rem; margin: 1.5rem 0; }
+    input[type=url], input[type=text] { flex: 1; padding: 0.6rem; font-size: 1rem; }
+    button { padding: 0.6rem 1rem; font-size: 1rem; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc4; vertical-align: top; }
+    .status-done { color: #2a7; }
+    .status-error { color: #c33; }
+    .status-downloading, .status-processing { color: #38a; }
+    .url { word-break: break-all; font-size: 0.85rem; color: #888; }
+  </style>
+</head>
+<body>
+  <h1>YTD</h1>
+  <p class="sub">Paste a YouTube URL and download.</p>
+
+  <form hx-post="/jobs" hx-target="#jobs" hx-swap="innerHTML" hx-on::after-request="this.reset()">
+    <input type="text" name="url" placeholder="https://www.youtube.com/watch?v=..." required autofocus>
+    <button type="submit">Download</button>
+  </form>
+
+  <div id="jobs"
+       hx-get="/jobs"
+       hx-trigger="load, every 2s"
+       hx-swap="innerHTML">
+    {% include "_jobs.html" %}
+  </div>
+</body>
+</html>

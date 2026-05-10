@@ -1,0 +1,18 @@
+services:
+  ytd:
+    image: ${YTD_IMAGE:?set YTD_IMAGE in .env, e.g. ghcr.io/you/ytd:latest}
+    pull_policy: always
+    ports: !reset []
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: ytd-nginx
+    depends_on:
+      - ytd
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
