@@ -7,3 +7,4 @@ downloads/
 data/
 *.sqlite3
 .DS_Store
+*.egg-info/
